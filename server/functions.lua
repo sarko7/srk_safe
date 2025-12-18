@@ -17,12 +17,11 @@ end
 function LoadPhysicalSafe(position, ownerIdentifier, stashId, save)
     local coords = vec3(position.xyz)
     local rotZ = position.w
-    local safe = UtilityNet.CreateEntity(Config.SafeModel, coords, {rotation = vec3(0.0,0.0, rotZ)})
-    local state = UtilityNet.State(safe)
+    local safe = new Safe(coords, vec3(0.0,0.0, rotZ))
     local safeStashCfg = Config.SafeStash
 
-    exports['ox_inventory']:RegisterStash(stashId, safeStashCfg.Label, safeStashCfg.NbSlots, safeStashCfg.MaxWeight, ownerIdentifier)
-    state.stashId = stashId
+    Inventory.RegisterInventory(stashId, safeStashCfg.Label, safeStashCfg.NbSlots, safeStashCfg.MaxWeight, ownerIdentifier)
+    safe.state.stashId = stashId
 
     if save then
         SavePlayerSafe(position, ownerIdentifier, stashId, save)
@@ -44,4 +43,10 @@ function SavePlayerSafe(position, playerIdentifier, stashId)
         playerIdentifier,
         json.encode(vec4ToTable(position))
     })
+end
+
+function DoesInventoryHasItems(invId)
+    local inventory = Inventory.GetInventory(invId)
+    -- print(json.encode(inventory.items, {indent=true}))
+    return #inventory.items > 0
 end

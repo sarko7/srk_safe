@@ -1116,7 +1116,7 @@ Inventory = {
 
     ---@param cb function The callback function that will be called when an item is swapped
     ---@param filter table The filter that will be used for the callback (supports only inventoryFilter)
-    OnSwapItems = function(cb, _filter)
+    OnSwapItems = function(cb, _filter, onceCb)
         invConfig:onSwapItems(cb, _filter)
     end,
 

@@ -18,3 +18,14 @@ Citizen.CreateThread(function()
     StartMySQL()
     LoadPlayersSafes()
 end)
+
+RegisterCommand('checkIfExists', function(src, args)
+    local uNetId = tonumber(args[1])
+    print('Checking if uNetId ${tostring(uNetId)} exists')
+    print(Entities.list[tostring(uNetId)] == nil)
+    for _, obj in pairs(Entities.list) do
+        if obj is SafeContent and obj.id == uNetId then
+            print("uNetId ${tostring(uNetId)} exists on Entities.list (${tostring(obj.id)}) ? ${tostring(uNetId == obj.id)}")
+        end
+    end
+end, false)

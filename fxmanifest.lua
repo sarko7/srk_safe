@@ -13,7 +13,7 @@ client_scripts {
     "@utility_objectify/build/client/api.lua",
     "build/client/modules/*.lua",
     "build/client/*.lua",
-    "build/shared/*.lua"
+    "build/shared/*.lua",
 }
 
 server_scripts {
