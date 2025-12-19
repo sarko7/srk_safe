@@ -10,7 +10,8 @@ shared_scripts {
 
 client_scripts {
     "@utility_lib/client/native.lua",
-    "@utility_objectify/build/client/api.lua",
+    'build/objectify.lua',
+    -- "@utility_objectify/build/shared/api.lua",
     "build/client/modules/*.lua",
     "build/client/*.lua",
     "build/shared/*.lua",
@@ -18,7 +19,8 @@ client_scripts {
 
 server_scripts {
     "@utility_lib/server/native.lua",
-    "@utility_objectify/build/server/api.lua",
+    'build/objectify.lua',
+    -- "@utility_objectify/build/shared/api.lua",
     "build/server/modules/*.lua",
     "build/server/*.lua",
     "build/shared/*.lua"

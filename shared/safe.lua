@@ -3,8 +3,8 @@ class Safe extends BaseEntity {
     safeCoords = nil,
     OnAwake = function(coords)
         if IsServer then
-            print(coords)
-            local safeContent = new SafeContent(coords)
+            print('OnAwake of Safe, only one safe is registered checking if called multiple time ')
+            local safeContent = new SafeContent(vec3(0.0, 0.0, 0.0))
             self:addChild('content', safeContent)
         end
     end,
