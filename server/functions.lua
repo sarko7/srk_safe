@@ -31,10 +31,13 @@ function LoadPhysicalSafe(position, ownerIdentifier, stashId, save)
 end
 
 function LoadPlayersSafes()
+    local c = 0
     local results = ExecuteSql('SELECT * FROM players_safes;')
     for k,v in pairs(results) do
         LoadPhysicalSafe(tableToVec4(json.decode(v.position)[1]), v.ownerIdenfifier, v.stashId, false)
+        c+=1
     end
+    print('Loaded x${c} physical safes')
 end
 
 function SavePlayerSafe(position, playerIdentifier, stashId)
@@ -43,10 +46,4 @@ function SavePlayerSafe(position, playerIdentifier, stashId)
         playerIdentifier,
         json.encode(vec4ToTable(position))
     })
-end
-
-function DoesInventoryHasItems(invId)
-    local inventory = Inventory.GetInventory(invId)
-    -- print(json.encode(inventory.items, {indent=true}))
-    return #inventory.items > 0
 end
