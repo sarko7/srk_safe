@@ -128,7 +128,7 @@ class EntitiesSingleton {
 
         while not self.list[id] do
             if GetGameTimer() - start > timeout then
-                throw new Error("${type(self)}: Child ${childId} not found after ${timeout}ms, skipping")
+                throw new Error("${type(self)}: Child ${id} not found after ${timeout}ms, skipping")
                 return nil
             end
 
@@ -1594,7 +1594,7 @@ class BaseEntity {
         
         -- Give time to the children to be added
         Citizen.SetTimeout(1, function()
-            self:callOnAll("OnAwake")
+            self:callOnAll("OnAwake", coords)
             self:callOnAll("OnSpawn")
             self:callOnAll("AfterSpawn")
         end)
@@ -1763,7 +1763,7 @@ class BaseEntityOneSync extends BaseEntity {
 
             -- Give time to the children to be added
             Citizen.SetTimeout(1, function()
-                self:callOnAll("OnAwake")
+                self:callOnAll("OnAwake", coords)
                 self:callOnAll("OnSpawn")
                 self:callOnAll("AfterSpawn")
             end)

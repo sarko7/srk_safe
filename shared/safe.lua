@@ -1,11 +1,10 @@
 @model(Config.SafeModel)
 class Safe extends BaseEntity {
-    safeCoords = nil,
     OnAwake = function(coords)
         if IsServer then
-            print('OnAwake of Safe, only one safe is registered checking if called multiple time ')
-            local safeContent = new SafeContent(vec3(0.0, 0.0, 0.0))
+            local safeContent = new SafeContent(coords)
             self:addChild('content', safeContent)
+            print("SafeContent with uNetId ${tostring(safeContent.id)} was added as a child of Safe ${tonumber(self.id)} as 'content'")
         end
     end,
 
@@ -34,9 +33,13 @@ class Safe extends BaseEntity {
                     }
                 }
             })
+
+            print('Is children list empty ?: ${tostring(table.empty(self.state.children))}')
+            for k,v in pairs(self.state.children) do
+                print('Child name: ${k}, uNetId: ${v}')
+            end
         else
             self.state.hasContent = self:DoesSafeContainsItems()
-            print("self:DoesSafeContainsItems()",self:DoesSafeContainsItems())
             self:InitContentHandleEvent()
         end
     end,
@@ -51,20 +54,12 @@ class Safe extends BaseEntity {
         exports['ox_inventory']:openInventory('stash', self.state.stashId)
     end,
 
-    @srpc
-    UpdateContentDisplay = function(coords)
-        local safeContent = self:getChild('content')
-        if self.state.hasContent then
-            safeContent:create(coords)
-        else
-            safeContent:destroy()
-        end
-    end,
-
     @state('hasContent')
     OnContentStateChange = function(value, _load)
-        print("OnContentStateChange: ${tostring(value)}")
-        self.server:UpdateContentDisplay(GetEntityCoords(self.obj))
+        local visibility = value ? 255 : 0
+        print("OnContentStateChange: ${tostring(value)} | alpha: ${tostring(visibility)}")
+        local safeContent = self:getChild('content')
+        SetEntityAlpha(safeContent.obj, visibility)
     end,
 
     DoesSafeContainsItems = function()
